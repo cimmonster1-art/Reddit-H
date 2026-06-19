@@ -3,3 +3,4 @@ dist/
 .devvit/
 *.log
 .DS_Store
+.env
