@@ -1,168 +1,236 @@
 # Substrate
 
-A subreddit, grown into a living world.
+A living 3D biome grown from a subreddit's posts, comments, upvotes, and motion.
 
-Open the post and you're looking at your community as an organism floating in space.
-Not a chart of it — the thing itself. Every comment is a moving cell, every upvote is
-light, every thread is a root reaching for the next. It drifts, it pulses, it changes
-overnight while you're gone. You come back to see what it became.
+Every subreddit has one organism floating in space. It isn't a metaphor laid over the
+community — it's built from the community. Posts are seeds. Comments are speech-spores
+drifting along threadroots. Replies branch underneath like roots. Upvotes are heat and
+lift. Controversy is weather. Recurring topics breed species. Old top posts fossilize.
+Flairs are the geography. The world is not decorative. The world is the subreddit.
 
-This works for any subreddit. r/biology grows a cellular rainforest. r/popculturechat
-grows a gossip reef that flashes when something breaks. r/brisbane grows a river the
-shape of its own arguments. Same engine, a different creature every time, because the
-creature is made of the community.
+The whole game is one sentence:
 
----
+> Open the post. See what the subreddit became overnight. Zoom into the living content.
+> Cast one action. Come back tomorrow to see the mutation.
 
-## The feeling we're after
-
-Wonder first. Before anyone reads a word, the screen should make them stop. A dark field,
-a single luminous body suspended in it, slow motion, depth. The kind of thing you turn
-your phone sideways for.
-
-Then legibility. Tap the glowing knot near the top and it tells you: this is the thread
-about the lost dog, 340 comments, still growing. The argument storm over the eastern
-ridge is the mod policy thread. The bright fruit that just ripened is today's top post.
-The wonder and the meaning are the same object, seen at two distances.
-
-We are not building a dashboard wearing a costume. No charts, no percentages, no
-"engagement up 12%." If a number ever appears it's because it's beautiful, not because
-it's data.
+That's it. The discipline is in protecting that loop from everything that would clutter it.
 
 ---
 
-## What you're actually looking at
+## The one principle
 
-The world is built from the subreddit's real activity, read fresh each day.
+It should feel like a **cosmic microscope**, not a sci-fi control panel.
 
-- **Comments** are the living matter — small bodies that drift, cluster, and trail
-  filaments to whatever they replied to. A busy thread is a swarm. A dead one is a few
-  cells holding still.
-- **Upvotes** are light and mass. Score makes a thing brighter, hotter, larger. The top
-  post of the day is the closest thing to a sun.
-- **Threads** are root systems — branching veins of light that grow as the conversation
-  deepens. Depth becomes length, breadth becomes spread.
-- **Heated threads** (lots of replies, low score, fast motion) become weather. Storms,
-  arcs, turbulence over the part of the world that's fighting.
-- **Recurring topics** become species. The same word surfacing day after day breeds a
-  small repeating creature that lives in the world and migrates between regions.
-- **Flairs** are the geography — separate biomes on the surface.
-- **Old, legendary posts** fossilize. They stop moving and become landmarks: a monument,
-  a cracked moon, a ruin the new growth grows around.
-
-Motion is the point. Nothing is a static diagram. The whole body breathes at the
-subreddit's pulse — fast when the place is awake, slow and tidal when it's quiet.
+NASA instrument meets alien terrarium meets a comment section turned biological. One
+breathtaking object in the center, a few precise labels, sparse glass, and nothing on
+screen that doesn't earn its place. The failure mode we are actively avoiding is "beautiful
+cosmic dashboard" — eighteen panels glowing at once, metrics pretending to be gameplay,
+neon for its own sake. Every visual has a reason. Every motion means something.
 
 ---
 
-## The day
+## The core screen
 
-Each morning the world has changed. A scheduled job reads the last 24 hours, folds it
-into the world's state, and posts the day's update in the feed. That post is the heartbeat
-and the reason to return.
+One floating biome, centered, in space.
 
-The update speaks in the world's own language, never in metrics:
+At a glance it reads as a tiny glowing ecosystem — ridges, canopy, reef, cloud, lava,
+roots, ocean. Then you notice the comments are *moving through it*. A comment like "this
+is insane" isn't buried in a list; it's a glowing spore drifting along a threadroot, an
+orange upvote current pulling it upward, its replies branching beneath it, its parent post
+a seed-island below. That recognition — *those are the actual comments* — is the moment the
+thing turns from art into a place.
 
-> The canopy thickened overnight. A storm opened over the debate basin. The word "frog"
-> surfaced for the third day and has become something with legs. Yesterday's top thread
-> went quiet and hardened into a monument near the south pole.
+Persistent UI is only four zones, and nothing else stays on screen:
 
-Inside, you get one move a day:
+- top-left: subreddit identity + date
+- top-right: a single pulse number
+- bottom: the zoom scale + today's one action
+- side drawer: details, and only when something is selected
 
-- **Explore** — uncover a hidden part of the world.
-- **Nurture** — feed a region so it grows tomorrow.
-- **Stabilize** — calm a storm before it spreads.
-- **Seed** — drop a small mark into the world from a fixed set of symbols.
-- **Name** — vote on what to call a new creature or place.
-
-And one shared decision: the community votes on what grows next. Tomorrow that vote is
-visible. Not "+20 points" — the moon actually has teeth now, because you all decided it
-should. Consequence you can see is the whole hook.
-
-Over a week the place accumulates a history. Day three the reef appeared. Day four someone
-named the recurring creature Greg. Day six Greg wandered into the politics swamp and hasn't
-come out. That shared mythology is what people come back for, more than any score.
+Everything else appears on touch and leaves when you let go.
 
 ---
 
-## Typography and surface
+## Endless zoom — the signature
 
-Restraint is the entire look. The wrong move is a dozen glowing fonts; the right move is
-two faces, used with discipline, and a lot of empty space.
+The scale bar is the spine of the whole thing. It is not a menu; each stop is a real place
+you fly into, still floating in space, the layer above dissolving into the one below.
 
-- **Display / numerals:** one quiet, high-contrast serif for the few large moments — the
-  world's name, a day count, a single headline on the daily card. Something with real
-  drawing in it, not a default. *Fraunces* (optical sizing, light weight) reads expensive
-  and is open-licensed. Used sparingly, large, with tight leading.
-- **Everything else:** one neutral grotesque, a single weight, generous line spacing.
-  *Söhne* or *ABC Diatype* if there's budget; *Geist* or *Inter Tight* if not. Never more
-  than two weights on screen at once.
-- **Labels and controls:** small caps, generous letter-spacing (roughly 0.12em), low
-  contrast against the dark. They should feel etched into the instrument, not printed on top.
-- **Scale:** a tight type ramp — one display size, one body, one label. No in-between
-  sizes improvising. Discipline reads as money.
-- **Color:** near-black field, one warm accent (a low gold), one cool accent (a pale
-  cyan), white used at maybe 80% so nothing screams. Glass panels are barely there — a
-  hint of blur, a one-pixel light edge, no heavy borders.
+```
+WORLD → REGION → THREAD → COMMENT → REPLY → SPORE
+```
 
-The test for every screen: would this look at home in a planetarium, or does it look like
-an app. We want the planetarium.
+- **World** — the entire subreddit as one organism, breathing at its own pace.
+- **Region** — flair and topic biomes: Meme Reef, Debate Basin, Tutorial Grove, Lore
+  Thicket, Fossil Archive. Each looks distinct enough to navigate by feel.
+- **Thread** — a single post becomes a living island/organ. Title visible, score drives
+  brightness, comment count drives root density.
+- **Comment** — a literal comment floats as a capsule on the root network. Upvotes make it
+  glow and rise; replies branch and orbit.
+- **Reply** — the micro-structure: reply chains as tendrils, arguments as lightning, jokes
+  as spores, long chains as vines.
+- **Spore** — a small contributor mark: *this user seeded this part of the biome.* Not a
+  profile, just authorship made visible.
+
+There is always a smaller layer to fall into. That bottomlessness is half the pull.
 
 ---
 
-## How it's built
+## How the subreddit is rendered
 
-Devvit Web. The client is a static bundle Reddit serves inside the post; the server is a
-set of small endpoints alongside it. No Next.js — there's no host for server rendering on
-this platform, and pretending otherwise burns days. The honest stack:
+Literal, not symbolic. This is the Three.js mapping.
 
-- **Client:** Vite, React, TypeScript. The world is React-Three-Fiber with drei, and a
-  single bloom/postprocessing pass for the glow. Everything is built to fit a phone first.
-- **Server:** Devvit endpoints. Reads the host subreddit (posts, comments, scores, flairs)
-  through the platform's Reddit API, holds the world state in key-value storage, and runs
-  the nightly digest on the scheduler.
-- **One source of truth:** the server writes the world; clients only render it, from a
-  shared seed, so every visitor sees the same thing and reloads are stable.
+**Posts → seeds.** Embedded in the surface. Score controls brightness, comment count
+controls root size, age controls state (fresh seed → bloom → fossil), flair controls which
+biome it grows in.
 
-The whole game is one scene with swappable layers. Growth is parameters changing — a
-biome's color, a moon's state, a species' population — not new scenes being built. That's
-what keeps it shippable.
+**Comments → speech-spores.** Real excerpts drift near their threadroot. Upvotes pull them
+up, replies branch below, recent ones drift faster, the top comment ripens into fruit or a
+star.
+
+**Upvotes → motion.** Never a bare number. Orange particles rising, lift currents, heat
+rings, fruit swelling, faster orbit around popular nodes.
+
+**Threads → roots.** A long thread is a visible root system — direct replies are branches,
+deep chains are tendrils, removed comments are dim gaps, reply bursts pulse like nerve
+signals.
+
+**Activity → weather.** Calm day: slow drift, soft glow. Busy day: meteor spores, pulse
+waves. Heated debate: lightning. Wholesome surge: aurora. Meme spike: fungal bloom.
+
+---
+
+## Color is a language, not decoration
+
+Six meanings, learned in one session, never broken:
+
+- **purple** — comments / conversation
+- **orange** — upvotes / heat / lift
+- **blue** — new activity / fresh motion
+- **green** — stable, healthy growth
+- **red** — controversy / storms / tension
+- **white / gold** — rare discoveries, fossils, monuments
+
+Once a player knows the palette they can read the world without reading a word.
+
+---
+
+## The daily loop
+
+Each day the biome digests the last 24 hours, and the post tells the story in the world's
+own language:
+
+> The Meme Reef expanded. A storm formed over the Debate Basin. A top comment ripened into
+> a Lantern Fruit. A recurring phrase grew legs and became a species. Yesterday's best post
+> hardened into a monument in the Archive.
+
+Then you get **one action**. One, per day. Scarcity is what makes the visit matter:
+
+Explore a hidden threadroot · Nurture a biome's growth · Stabilize a storm · Seed a spore ·
+Name a new species or region · Evolve — vote on tomorrow's mutation.
+
+The loop: the subreddit makes raw activity → Substrate renders it → the community chooses
+what grows → tomorrow the world visibly changes. The reward is never points. The reward is
+**consequence you can see**.
+
+---
+
+## Why you come back (the honest mechanics)
+
+The hook is emotional, not transactional. Not "claim your daily reward" — "what did we
+become overnight?" The retention is engineered, but out of anticipation and stakes, not
+dark patterns:
+
+- **The overnight reveal.** You never quite know what your votes produced. Yesterday → today
+  is a visible before/after.
+- **A shared clock.** One countdown to the next growth cycle. The vote closes; your single
+  action can tip it. The timer creates the anticipation.
+- **Event days.** Some mornings carry a rare state — New Species Discovered, Storm Forming,
+  Fossilization Event, Migration, Bloom Window, Naming Ritual, Rare Alignment. They only
+  happen if the community's activity earns them, and only the people who showed up see them
+  first.
+- **Streaks, lightly.** Consecutive days are visible and worth protecting, never punishing.
+- **Discovery at depth.** Being first to fall all the way to the word-level of the top
+  thread is its own reward — a title, a mark on the spore.
+- **Accumulated memory.** The world keeps a history, and that history is the real addiction:
+  *Day 1 first seed · Day 2 the storm split the basin · Day 3 a comment became a monument ·
+  Day 5 the river got named Greg · Day 7 the whole biome hit Aurora Bloom.* A week in,
+  nobody wants to abandon a world they built.
+
+---
+
+## The game layer, kept thin
+
+The complexity lives in the world, not the rules. Three systems, nothing more:
+
+1. **Discovery** — tap around, uncover living content. *Lantern Fruit — grown from the
+   comment "this changed how I see this" · 428 upvotes · 19 replies · rising.*
+2. **Cultivation** — the community votes what grows next: Nourish the Canopy · Stabilize the
+   Storm · Awaken the Archive · Expand the Reef.
+3. **Memory** — the world remembers, and the history compounds.
+
+---
+
+## What the Reddit post looks like
+
+Title carries the hook on its own:
+
+> r/earthporn's biome changed overnight — a new mountain root has formed.
+
+Inside: the floating biome, a thin **Today's Bloom** overlay (23 new seeds · 1.2k comments ·
+8.4k upvotes · Waterfall Basin expanded · a top comment became a Lantern Fruit), the daily
+vote with four buttons, and one line: **next growth cycle in 08:34:22.**
+
+---
+
+## Stack
+
+Devvit Web. The client is a static bundle Reddit serves inside the post; the server is a set
+of small endpoints beside it. No Next.js — there's no server-render host on this platform.
+
+- **Client:** Vite + React + TypeScript. The biome is React-Three-Fiber with drei and a
+  single bloom pass. Phone first.
+- **Server:** Devvit endpoints. Reads the host subreddit (posts, comments, scores, flairs),
+  holds the world state in key-value storage, runs the nightly digest on the scheduler.
+- **One source of truth:** the server authors the world from a shared seed; clients only
+  render it, so everyone sees the same place and reloads are stable.
+
+One scene, swappable layers. Growth is parameters changing, not new scenes being built —
+that's what keeps it shippable.
 
 ---
 
 ## Contributions, kept clean
 
-People shape the world without typing into it. Seeds come from a fixed set of symbols.
-Names are chosen from a short candidate list by vote, not free text. Growth is a bounded
-choice. Nothing a single person writes is rendered verbatim into the world, so there's
-nothing to abuse, and the world still ends up collectively authored. That's the strong
-version of user-generated content here: everyone's hands are on it, no one can deface it.
+Hands on the world, nothing to deface. Seeds come from a fixed symbol set. Names are voted
+from a short candidate list, not free-typed. Growth is a bounded choice. Nothing one person
+writes is rendered verbatim, yet the world is collectively authored. Quiet or brand-new
+subreddits never look empty — they open as a dormant spore with their all-time best posts
+already fossilized into the ground, so there's always something to find.
 
 ---
 
-## Scope, honestly
+## The MVP — one perfect slice
 
-One world, done well, beats ten worlds half-built.
+Not the whole galaxy. One subreddit, made to feel alive:
 
-- First, prove the platform: a real interactive post, a server endpoint answering, the
-  subreddit readable, a lit sphere breathing on an actual phone.
-- Then the static world: layers, the daily card, tappable knots that open and explain
-  themselves, the zoom from world down to a single comment.
-- Then the real feed: the nightly digest turning 24 hours of the subreddit into the world's
-  next state.
-- Then the loop: one daily action, the shared vote, tomorrow showing the result, the
-  history filling in.
-- Then polish until it looks launch-ready, with a demo subreddit grown over several days
-  so the evolution is visible at a glance.
+1. fetch recent posts and comments
+2. grow one floating biome
+3. posts as seeds, comments as literal floating spores
+4. upvotes as orange upward currents, threads as branching roots
+5. zoom: World → Thread → Comment
+6. one daily vote on what grows next
+7. next day, a visible mutation
 
-Quiet subreddits never look empty — a new or sleepy community starts as a dormant spore
-with its all-time best posts already fossilized into the ground, so there's always
-something to find.
+That is enough to feel like magic.
 
 ---
 
-## In one line
+## Pitch
 
-Substrate renders any subreddit as a living world made of its own comments, votes, and
-motion — and quietly rebuilds it every night, so the community keeps coming back to see
-what it grew.
+> Substrate turns a subreddit into a living 3D biome floating in space. Posts become seeds,
+> comments become branching roots, upvotes become glowing motion currents, and the
+> community's daily choices shape what the organism grows next. Every day, people return to
+> see what their subreddit became overnight.
+
+Not a pretty cosmic dashboard. **Reddit as a living organism you can explore.**
