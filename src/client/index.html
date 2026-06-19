@@ -6,33 +6,90 @@
       name="viewport"
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
-    <title>Substrate</title>
+    <title>substrataaa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <div id="stage">
-      <!-- Three.js mounts the rendered cosmos here -->
+      <!-- Three.js cosmos -->
       <div id="organism"></div>
 
-      <!-- Cold hairline chrome (no glass, no cards) -->
-      <header id="topbar" hidden>
-        <div class="brand"><span class="dot"></span><span class="brand-name">SUBSTRATE</span></div>
-        <div id="metabolism" class="metabolism"></div>
-      </header>
+      <!-- Left panel: identity + live stats -->
+      <aside id="panel-left" hidden>
+        <div class="brand">
+          <div class="brand-orbs"><span></span><span></span><span></span></div>
+          <div class="brand-text">
+            <div class="brand-name">substrataaa</div>
+            <div class="brand-tag">A LIVING COSMOS OF REDDIT</div>
+          </div>
+        </div>
 
-      <nav id="zoombar" hidden></nav>
+        <div class="live-row">
+          <span class="live-label">LIVE INDEX</span>
+          <span class="live-signal" id="live-signal"></span>
+          <span class="live-badge">● LIVE</span>
+        </div>
 
-      <section id="inspector" hidden>
-        <div id="insp-kicker" class="kicker"></div>
-        <h2 id="insp-title" class="title"></h2>
-        <p id="insp-blurb" class="blurb"></p>
-        <div id="insp-stats" class="stats"></div>
-        <button id="insp-action" class="action"></button>
-      </section>
+        <ul class="stat-list" id="stat-list"></ul>
 
+        <div class="pulse-header">
+          <span class="mono-label">ACTIVITY PULSE</span>
+          <span class="mono-label" id="pulse-range">24H</span>
+        </div>
+        <canvas id="sparkline" width="220" height="44"></canvas>
+      </aside>
+
+      <!-- Right panel: selection detail -->
+      <aside id="panel-right" hidden>
+        <div class="panel-section" id="sel-galaxy" hidden>
+          <div class="section-head">SELECTED GALAXY <span class="hairline-fill"></span></div>
+          <div class="galaxy-card">
+            <canvas id="galaxy-thumb" width="56" height="56"></canvas>
+            <div class="galaxy-meta">
+              <div class="galaxy-name" id="sel-gal-name"></div>
+              <div class="galaxy-sub" id="sel-gal-sub"></div>
+              <div class="galaxy-blurb" id="sel-gal-blurb"></div>
+            </div>
+          </div>
+          <div class="detail-stats" id="sel-gal-stats"></div>
+          <button class="dive-btn" id="sel-gal-dive" hidden>Dive in ↓</button>
+        </div>
+
+        <div class="panel-section" id="sel-star" hidden>
+          <div class="section-head">SELECTED STAR <span class="hairline-fill"></span></div>
+          <div class="star-title" id="sel-star-title"></div>
+          <div class="star-meta" id="sel-star-meta"></div>
+          <div class="detail-stats" id="sel-star-stats"></div>
+          <button class="dive-btn" id="sel-star-dive" hidden>Descend to comments ↓</button>
+        </div>
+
+        <div class="panel-section" id="sel-comment" hidden>
+          <div class="section-head">COMMENT ORBIT <span class="hairline-fill"></span></div>
+          <div class="star-title" id="sel-cmt-text"></div>
+          <div class="star-meta" id="sel-cmt-meta"></div>
+          <div class="detail-stats" id="sel-cmt-stats"></div>
+          <button class="dive-btn" id="sel-cmt-dive" hidden>Trace replies ↓</button>
+        </div>
+
+        <div class="panel-section" id="sel-reply" hidden>
+          <div class="section-head">MOON <span class="hairline-fill"></span></div>
+          <div class="star-title" id="sel-rpl-text"></div>
+          <div class="star-meta" id="sel-rpl-meta"></div>
+          <div class="detail-stats" id="sel-rpl-stats"></div>
+        </div>
+      </aside>
+
+      <!-- Bottom breadcrumb -->
+      <nav id="zoombar" hidden>
+        <span class="cosmos-hint">∞ POSSIBLE PATHS ∞</span>
+        <div class="crumb-row" id="crumb-row"></div>
+      </nav>
+
+      <!-- Loader -->
       <div id="loader" class="loader">
-        <div class="pulse"></div>
-        <p>warming the substrate…</p>
+        <div class="loader-orb"></div>
+        <p>initialising the substrate…</p>
       </div>
     </div>
 
