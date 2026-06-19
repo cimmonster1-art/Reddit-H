@@ -149,3 +149,31 @@ export interface MutationResponse {
   world?: WorldState;
   me?: InitResponse['me'];
 }
+
+// ---- Thread zoom (comment-orbit) ----
+
+/** A single reply, rendered as a satellite orbiting its comment-moon. */
+export interface ReplyBranch {
+  id: string;
+  author: string;
+  excerpt: string; // trimmed, never the full body
+  score: number; // -> fuel / brightness
+  ageHours: number; // -> subtle angular drift
+}
+
+/** A top-level comment, rendered as a moon orbiting the thread-star. */
+export interface CommentNode {
+  id: string;
+  author: string;
+  excerpt: string;
+  score: number; // -> fuel / brightness / mass
+  replyCount: number; // -> satellite count
+  ageHours: number; // -> orbital drift speed
+  replies: ReplyBranch[];
+}
+
+/** Real comments/replies for one thread, fetched on demand when diving in. */
+export interface ThreadResponse {
+  threadId: string;
+  comments: CommentNode[];
+}

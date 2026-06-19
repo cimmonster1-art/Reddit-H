@@ -11,20 +11,21 @@ class ThreadNode implements Raycastable {
   readonly object = new THREE.Group();
   readonly payload: SelectionPayload;
   private base: number;
+  private mesh: THREE.Mesh;
 
   constructor(readonly organ: Organ, center: THREE.Vector3) {
     const color = VITAL_COLOR[organ.state] ?? 0x99a8ff;
     this.base = 1.4 + Math.log10(1 + organ.lift) * 1.2;
-    const mesh = new THREE.Mesh(
+    this.mesh = new THREE.Mesh(
       new THREE.IcosahedronGeometry(1, 2),
       new THREE.MeshStandardMaterial({
         color, metalness: 0.2, roughness: 0.5,
         emissive: color, emissiveIntensity: 0.25 + organ.oxygen * 0.5,
       }),
     );
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
-    this.object.add(mesh);
+    this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
+    this.object.add(this.mesh);
     const spread = 14;
     this.object.position.set(
       center.x + (organ.u - 0.5) * spread,
@@ -37,6 +38,11 @@ class ThreadNode implements Raycastable {
 
   focus(): FocusFrame {
     return { center: this.object.position.clone(), radius: this.base * 3 };
+  }
+
+  dispose(): void {
+    this.mesh.geometry.dispose();
+    (this.mesh.material as THREE.Material).dispose();
   }
 }
 
@@ -59,5 +65,10 @@ export class ThreadField {
     if (!this.group.visible) return;
     for (const n of this.nodes) n.object.rotation.y += dt * 0.4;
     this.group.position.y = Math.sin(elapsed * 0.6) * 0.2;
+  }
+
+  dispose(): void {
+    for (const n of this.nodes) n.dispose();
+    this.group.clear();
   }
 }

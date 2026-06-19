@@ -19,6 +19,7 @@ import type {
 } from '../shared/types.js';
 import { TITLES } from '../shared/vocab.js';
 import { readSubreddit } from './digest.js';
+import { readThread } from './thread.js';
 import { evolve, freshWorld } from './world.js';
 import {
   awardTitle,
@@ -82,6 +83,17 @@ app.get('/api/init', async (_req: Request, res: Response) => {
     titles: await getTitles(sr, user),
   };
   res.json({ world, me } satisfies InitResponse);
+});
+
+// Real comments/replies for one thread, fetched on demand when a user dives
+// into a thread-star. Per-view read, capped inside readThread.
+app.get('/api/thread/:id', async (req: Request, res: Response) => {
+  try {
+    const data = await readThread(req.params.id);
+    res.json(data);
+  } catch {
+    res.json({ threadId: req.params.id, comments: [] });
+  }
 });
 
 app.post('/api/action', async (req: Request, res: Response) => {

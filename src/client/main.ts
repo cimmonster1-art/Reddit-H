@@ -22,9 +22,12 @@ async function boot(): Promise<void> {
 
   const controller = new SubstrateController(parent, init.world);
   const hud = new Hud((index) => controller.surfaceTo(index));
-  new Inspector(controller.selection, (payload) => controller.dive(payload));
+  const inspector = new Inspector(controller.selection, (payload) => {
+    void controller.dive(payload);
+  });
 
   controller.onZoomChange((level, crumbs) => hud.setZoom(level, crumbs));
+  controller.onContext((thread, comment) => inspector.setContext(thread, comment));
   controller.mount();
   hud.mount(init.world);
 }

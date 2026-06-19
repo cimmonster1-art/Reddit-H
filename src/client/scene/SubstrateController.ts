@@ -9,15 +9,21 @@ import { Atmosphere } from './world/Atmosphere.js';
 import { PlanetShell } from './world/PlanetShell.js';
 import { BiomeField } from './world/BiomeField.js';
 import { ThreadField } from './world/ThreadField.js';
+import { CommentField } from './world/CommentField.js';
+import { ReplyField } from './world/ReplyField.js';
 import { UpvoteCurrent } from './effects/UpvoteCurrent.js';
 import { FOUNDATIONAL_BIOMES } from '../world/foundational.js';
-import type { SelectionPayload } from './raycastable.js';
-import type { WorldState } from '../../shared/types.js';
+import { api } from '../api.js';
+import type { Raycastable, SelectionPayload } from './raycastable.js';
+import type { WorldState, CommentNode } from '../../shared/types.js';
 
 // Orchestrates the whole substrate: builds subsystems, maps a WorldState into
-// scene content, and wires pointer -> raycast -> selection -> zoom/card. This is
-// the only file that knows about every layer; each layer stays ignorant of the
-// others.
+// scene content, and wires pointer -> raycast -> selection -> zoom/card. It also
+// owns the lazy thread/comment/reply layer lifecycle: deeper layers are built on
+// dive and disposed the moment the camera surfaces above them. This is the only
+// file that knows about every layer; each layer stays ignorant of the others.
+type ContextFn = (thread: string | null, comment: string | null) => void;
+
 export class SubstrateController {
   private root: SceneRoot;
   private camera: CameraController;
@@ -30,7 +36,12 @@ export class SubstrateController {
   private planet = new PlanetShell();
   private biomes: BiomeField;
   private threads: ThreadField | null = null;
+  private comments: CommentField | null = null;
+  private replies: ReplyField | null = null;
   private current: UpvoteCurrent;
+
+  private ctxThread: string | null = null;
+  private contextFn: ContextFn | null = null;
 
   constructor(parent: HTMLElement, private world: WorldState) {
     this.root = new SceneRoot(parent);
@@ -53,6 +64,7 @@ export class SubstrateController {
       onClick: (ndc) => this.onClick(ndc),
     });
 
+    this.zoom.onChange((level) => this.syncLayers(level));
     this.bindLoop();
     this.bindHover();
   }
@@ -69,14 +81,19 @@ export class SubstrateController {
     return this.zoom.onChange(fn);
   }
 
+  /** Subscribe to parent-context changes (thread/comment the inspector shows). */
+  onContext(fn: ContextFn): void { this.contextFn = fn; }
+
   surfaceTo(index: number): void { this.zoom.surfaceTo(index); }
 
-  /** Dive toward a selection (called by the card 'enter' button). */
-  dive(payload: SelectionPayload): void {
+  /** Dive toward a selection (called by the inspector's action). */
+  async dive(payload: SelectionPayload): Promise<void> {
     const node = this.find(payload);
     if (!node) return;
     this.zoom.dive(payload, node.focus());
     if (payload.kind === 'biome') this.revealThreads(payload);
+    else if (payload.kind === 'thread') await this.revealComments(payload, node.object);
+    else if (payload.kind === 'comment') this.revealReplies(payload, node.object);
   }
 
   // --- internals -----------------------------------------------------------
@@ -100,7 +117,7 @@ export class SubstrateController {
   }
 
   private revealThreads(payload: SelectionPayload): void {
-    if (this.threads) { this.root.scene.remove(this.threads.group); this.threads = null; }
+    this.disposeThreads();
     const node = this.biomes.byId(payload.id);
     const isHome = payload.id.startsWith('b-home-') ||
       payload.label.toLowerCase() === `r/${this.world.subreddit.toLowerCase()}`;
@@ -111,17 +128,85 @@ export class SubstrateController {
     for (const t of this.threads.nodes) this.raycast.register(t);
   }
 
+  private async revealComments(payload: SelectionPayload, obj: THREE.Object3D): Promise<void> {
+    this.disposeComments();
+    let data;
+    try {
+      data = await api.thread(payload.id);
+    } catch {
+      return;
+    }
+    const center = obj.getWorldPosition(new THREE.Vector3());
+    this.comments = new CommentField(data.comments, center);
+    this.root.scene.add(this.comments.group);
+    for (const n of this.comments.nodes) this.raycast.register(n);
+    this.setContext(payload.label, null);
+  }
+
+  private revealReplies(payload: SelectionPayload, obj: THREE.Object3D): void {
+    this.disposeReplies();
+    const node = payload.data as CommentNode | undefined;
+    if (!node || node.replies.length === 0) return;
+    const center = obj.getWorldPosition(new THREE.Vector3());
+    this.replies = new ReplyField(node.replies, center);
+    this.root.scene.add(this.replies.group);
+    for (const n of this.replies.nodes) this.raycast.register(n);
+    this.setContext(this.ctxThread, payload.label);
+  }
+
+  /** Dispose any layers deeper than the current zoom level. */
+  private syncLayers(level: ZoomLevel): void {
+    if (level === 'planet') this.disposeThreads();
+    if (level === 'planet' || level === 'biome') this.disposeComments();
+    if (level === 'planet' || level === 'biome' || level === 'thread') this.disposeReplies();
+    if (level === 'planet' || level === 'biome') this.setContext(null, null);
+    else if (level === 'thread') this.setContext(this.ctxThread, null);
+  }
+
+  private disposeThreads(): void {
+    if (!this.threads) return;
+    for (const n of this.threads.nodes) this.raycast.unregister(n);
+    this.root.scene.remove(this.threads.group);
+    this.threads.dispose();
+    this.threads = null;
+  }
+
+  private disposeComments(): void {
+    if (!this.comments) return;
+    for (const n of this.comments.nodes) this.raycast.unregister(n);
+    this.root.scene.remove(this.comments.group);
+    this.comments.dispose();
+    this.comments = null;
+  }
+
+  private disposeReplies(): void {
+    if (!this.replies) return;
+    for (const n of this.replies.nodes) this.raycast.unregister(n);
+    this.root.scene.remove(this.replies.group);
+    this.replies.dispose();
+    this.replies = null;
+  }
+
+  private setContext(thread: string | null, comment: string | null): void {
+    this.ctxThread = thread;
+    this.contextFn?.(thread, comment);
+  }
+
   private onClick(ndc: THREE.Vector2): void {
     const hit = this.raycast.pick(ndc);
     this.selection.selected.set(hit?.payload ?? null);
     if (hit && hit.payload.kind === 'planet') this.zoom.surfaceTo(0);
   }
 
-  private find(payload: SelectionPayload) {
-    if (payload.kind === 'planet') return this.planet;
-    if (payload.kind === 'biome') return this.biomes.byId(payload.id) ?? null;
-    if (payload.kind === 'thread') return this.threads?.nodes.find((n) => n.payload.id === payload.id) ?? null;
-    return null;
+  private find(payload: SelectionPayload): Raycastable | null {
+    switch (payload.kind) {
+      case 'planet': return this.planet;
+      case 'biome': return this.biomes.byId(payload.id) ?? null;
+      case 'thread': return this.threads?.nodes.find((n) => n.payload.id === payload.id) ?? null;
+      case 'comment': return this.comments?.byId(payload.id) ?? null;
+      case 'reply': return this.replies?.byId(payload.id) ?? null;
+      default: return null;
+    }
   }
 
   private bindHover(): void {
@@ -138,6 +223,8 @@ export class SubstrateController {
       this.planet.update(dt, t);
       this.biomes.update(dt, t);
       this.threads?.update(dt, t);
+      this.comments?.update(dt, t);
+      this.replies?.update(dt, t);
       this.current.update(dt);
     });
   }
