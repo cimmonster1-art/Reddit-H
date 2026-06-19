@@ -35,6 +35,7 @@ export class SceneRoot {
     );
     this.loop.add(() => this.postfx.render());
     window.addEventListener('resize', this.onResize);
+    document.addEventListener('visibilitychange', this.onVisibility);
   }
 
   private onResize = (): void => {
@@ -44,8 +45,16 @@ export class SceneRoot {
     this.postfx.setSize(window.innerWidth, window.innerHeight);
   };
 
+  // Stop the render loop entirely while the post is off-screen so a backgrounded
+  // tab costs zero GPU.
+  private onVisibility = (): void => {
+    if (document.hidden) this.loop.stop();
+    else this.loop.start();
+  };
+
   dispose(): void {
     window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('visibilitychange', this.onVisibility);
     this.loop.stop();
     this.lighting.dispose();
     this.postfx.dispose();

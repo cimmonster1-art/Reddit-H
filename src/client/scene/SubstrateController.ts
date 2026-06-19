@@ -32,7 +32,7 @@ export class SubstrateController {
   private threads: ThreadField | null = null;
   private current: UpvoteCurrent;
 
-  constructor(private parent: HTMLElement, private world: WorldState) {
+  constructor(parent: HTMLElement, private world: WorldState) {
     this.root = new SceneRoot(parent);
     this.camera = new CameraController(this.root.camera, this.root.renderer.domElement);
     this.zoom = new ZoomController(this.camera, this.planet.focus());

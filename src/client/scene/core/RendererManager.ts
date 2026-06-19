@@ -7,7 +7,9 @@ export class RendererManager {
 
   constructor(parent: HTMLElement) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Cap DPR: bloom + shadows are fragment-heavy, and 1.75 is visually
+    // indistinguishable from native retina here while costing far less.
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     this.renderer.setSize(window.innerWidth, window.innerHeight, false);
     this.renderer.setClearColor(0x02040a, 1);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;

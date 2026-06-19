@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developers.reddit.com/schema/config-file.v1.json",
+  "name": "substrate",
+  "permissions": {
+    "reddit": {
+      "scope": "moderator"
+    },
+    "redis": true
+  },
+  "post": {
+    "dir": "dist/client",
+    "entrypoints": {
+      "default": {
+        "entry": "index.html",
+        "height": "tall"
+      }
+    }
+  },
+  "server": {
+    "dir": "dist/server",
+    "entry": "index.js"
+  },
+  "menu": {
+    "items": [
+      {
+        "label": "Substrate: grow this community's organism",
+        "description": "Create the living-organism post for this subreddit",
+        "location": "subreddit",
+        "forUserType": "moderator",
+        "endpoint": "/internal/menu/create-post"
+      }
+    ]
+  },
+  "scheduler": {
+    "tasks": {
+      "nightly-digest": {
+        "endpoint": "/internal/scheduler/digest",
+        "cron": "0 8 * * *"
+      }
+    }
+  },
+  "triggers": {
+    "onAppInstall": "/internal/triggers/install"
+  }
+}

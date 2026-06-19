@@ -15,7 +15,7 @@ export class LightingRig {
     const key = new THREE.DirectionalLight(0xcfeaff, 1.3);
     key.position.set(180, 240, 140);
     key.castShadow = true;
-    key.shadow.mapSize.set(2048, 2048);
+    key.shadow.mapSize.set(1024, 1024);
     key.shadow.camera.near = 1;
     key.shadow.camera.far = 900;
     key.shadow.camera.left = -220;

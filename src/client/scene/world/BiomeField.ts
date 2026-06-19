@@ -24,6 +24,8 @@ class BiomeNode implements Raycastable {
   private baseScale: number;
   private baseEmissive: number;
   private mat: THREE.MeshStandardMaterial;
+  private phase = Math.random() * Math.PI * 2;
+  private hovered = false;
 
   constructor(readonly biome: FoundationalBiome, home: boolean) {
     const pos = latLonToVec3(biome.lat, biome.lon, PLANET_RADIUS * 1.05);
@@ -43,8 +45,16 @@ class BiomeNode implements Raycastable {
   }
 
   setHover(on: boolean): void {
+    this.hovered = on;
     this.object.scale.setScalar(this.baseScale * (on ? 1.22 : 1));
     this.mat.emissiveIntensity = this.baseEmissive * (on ? 1.6 : 1);
+  }
+
+  // A slow emissive breath so each galaxy reads as alive. Cheap (one uniform),
+  // and skipped while hovered so it never fights the hover highlight.
+  pulse(elapsed: number): void {
+    if (this.hovered) return;
+    this.mat.emissiveIntensity = this.baseEmissive * (1 + 0.12 * Math.sin(elapsed * 0.8 + this.phase));
   }
 
   focus(): FocusFrame {
@@ -74,5 +84,6 @@ export class BiomeField {
 
   update(_dt: number, elapsed: number): void {
     this.group.rotation.y = elapsed * 0.03; // ride the cosmos spin
+    for (const n of this.nodes) n.pulse(elapsed);
   }
 }
