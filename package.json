@@ -6,7 +6,7 @@
   "type": "module",
   "description": "Substrate — Reddit rendered as one living cyberpunk organism you tend each day.",
   "scripts": {
-    "dev": "devvit playtest",
+    "dev": "npx devvit playtest",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
     "build:server": "vite build --config vite.server.config.ts",
