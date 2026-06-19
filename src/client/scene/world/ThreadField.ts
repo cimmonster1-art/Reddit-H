@@ -3,9 +3,10 @@ import { VITAL_COLOR } from '../../game/palette.js';
 import type { Raycastable, SelectionPayload, FocusFrame } from '../raycastable.js';
 import type { Organ } from '../../../shared/types.js';
 
-// The home biome's posts as thread-organs, laid out from their deterministic
-// u/v and coloured by vital state. Built lazily around a biome's world-space
-// centre when the camera dives into that biome; hidden otherwise.
+// The home galaxy's posts as star-bodies, laid out from their deterministic u/v
+// and coloured by vital state. Shadowed PBR so they sit in the same rendered
+// light as everything else. Built lazily around a galaxy's world-space centre
+// when the camera dives in; hidden otherwise.
 class ThreadNode implements Raycastable {
   readonly object = new THREE.Group();
   readonly payload: SelectionPayload;
@@ -15,15 +16,20 @@ class ThreadNode implements Raycastable {
     const color = VITAL_COLOR[organ.state] ?? 0x99a8ff;
     this.base = 1.4 + Math.log10(1 + organ.lift) * 1.2;
     const mesh = new THREE.Mesh(
-      new THREE.IcosahedronGeometry(1, 1),
-      new THREE.MeshStandardMaterial({ color, emissive: color, emissiveIntensity: 0.4 + organ.oxygen * 0.6, roughness: 0.6 }),
+      new THREE.IcosahedronGeometry(1, 2),
+      new THREE.MeshStandardMaterial({
+        color, metalness: 0.2, roughness: 0.5,
+        emissive: color, emissiveIntensity: 0.25 + organ.oxygen * 0.5,
+      }),
     );
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
     this.object.add(mesh);
     const spread = 14;
     this.object.position.set(
       center.x + (organ.u - 0.5) * spread,
       center.y + (organ.v - 0.5) * spread,
-      center.z + (Math.sin(organ.u * 6.28) * 2),
+      center.z + Math.sin(organ.u * 6.28) * 2,
     );
     this.object.scale.setScalar(this.base);
     this.payload = { kind: 'thread', id: organ.id, label: organ.title, data: organ };

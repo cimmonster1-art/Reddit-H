@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 import { COLOR } from '../../../design-system/index.js';
 
-// Pooled particle current — lift / upvotes rendered as rising electric motes
-// around the planet. Fixed pool, no per-frame allocation, recycled when a mote
-// passes the top of its column. Intensity scales with overnight bloodflow.
+// Pooled particle current — lift / upvotes rendered as cold rising motes around
+// the cosmos. Fixed pool, no per-frame allocation, recycled at the top of each
+// column. Additive so the bloom pass catches them. Intensity scales with
+// overnight bloodflow.
 export class UpvoteCurrent {
   readonly points: THREE.Points;
   private positions: Float32Array;
@@ -11,7 +12,7 @@ export class UpvoteCurrent {
   private count: number;
   private radius: number;
 
-  constructor(count = 600, radius = 150) {
+  constructor(count = 520, radius = 150) {
     this.count = count;
     this.radius = radius;
     this.positions = new Float32Array(count * 3);
@@ -20,7 +21,7 @@ export class UpvoteCurrent {
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(this.positions, 3));
     const mat = new THREE.PointsMaterial({
-      color: COLOR.lift, size: 1.6, transparent: true, opacity: 0.8,
+      color: COLOR.accent, size: 1.3, transparent: true, opacity: 0.7,
       blending: THREE.AdditiveBlending, depthWrite: false,
     });
     this.points = new THREE.Points(geo, mat);
@@ -28,8 +29,7 @@ export class UpvoteCurrent {
   }
 
   setIntensity(bloodflow: number): void {
-    (this.points.material as THREE.PointsMaterial).opacity =
-      0.4 + Math.min(0.5, bloodflow / 6000);
+    (this.points.material as THREE.PointsMaterial).opacity = 0.35 + Math.min(0.45, bloodflow / 6000);
   }
 
   private reset(i: number, spread: boolean): void {

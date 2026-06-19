@@ -1,17 +1,20 @@
 import * as THREE from 'three';
 
-/** Owns the WebGL renderer and keeps it sized to the viewport. One job. */
+// Owns the WebGL renderer and its colour/shadow pipeline. ACES tone mapping and
+// soft shadow maps are what make the cosmos read as rendered rather than flat.
 export class RendererManager {
   readonly renderer: THREE.WebGLRenderer;
 
   constructor(parent: HTMLElement) {
-    this.renderer = new THREE.WebGLRenderer({
-      antialias: true, alpha: true, powerPreference: 'high-performance',
-    });
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setSize(window.innerWidth, window.innerHeight, false);
+    this.renderer.setClearColor(0x02040a, 1);
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     parent.appendChild(this.renderer.domElement);
-    this.resize();
   }
 
   get domElement(): HTMLCanvasElement {

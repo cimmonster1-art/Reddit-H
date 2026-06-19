@@ -1,0 +1,130 @@
+:root {
+  --void: #02040a;
+  --abyss: #04070f;
+  --navy: #0a1322;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --ink: #e6edf5;
+  --ink-dim: #8293a8;
+  --ink-faint: #4a5a6e;
+  --accent: #27c4d9;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--void);
+  color: var(--ink);
+  font-family: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+
+#stage { position: fixed; inset: 0; }
+#organism { position: absolute; inset: 0; }
+#organism canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+
+/* Shared mono micro-label — the cold instrument voice. */
+.kicker, .metabolism .mv i, .stats .stat i, #zoombar button {
+  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---- Top identity strip ---- */
+#topbar {
+  position: absolute;
+  top: env(safe-area-inset-top, 12px);
+  left: 16px; right: 16px;
+  height: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 6;
+}
+.brand { display: flex; align-items: center; gap: 9px; }
+.brand-name {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.28em; color: var(--ink);
+}
+.brand .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 10px var(--accent);
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+
+.metabolism { display: flex; gap: 18px; }
+.metabolism .mv { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.metabolism .mv i { color: var(--ink-faint); font-style: normal; }
+.metabolism .mv b { font-size: 13px; font-weight: 600; color: var(--ink); }
+
+/* ---- Zoom breadcrumb ---- */
+#zoombar {
+  position: absolute;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 8px;
+  z-index: 6;
+}
+#zoombar button {
+  background: none; border: none; cursor: pointer;
+  color: var(--ink-faint); padding: 4px 2px;
+}
+#zoombar button.active { color: var(--accent); }
+#zoombar .sep { color: var(--ink-faint); font-size: 10px; }
+
+/* ---- Inspector (flat, hairline, no card) ---- */
+#inspector {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: min(380px, 92vw);
+  padding: 16px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+  z-index: 6;
+  border-top: 1px solid var(--hairline);
+  background: linear-gradient(to top, rgba(2, 4, 10, 0.78), rgba(2, 4, 10, 0) 100%);
+  animation: rise 0.18s ease;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+#inspector .kicker { color: var(--accent); margin-bottom: 8px; }
+#inspector .title {
+  margin: 0 0 6px; font-size: 17px; font-weight: 600; line-height: 1.25;
+}
+#inspector .blurb {
+  margin: 0 0 12px; font-size: 12.5px; line-height: 1.5; color: var(--ink-dim);
+}
+#inspector .blurb:empty { display: none; }
+.stats { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; }
+.stats .stat { display: flex; flex-direction: column; gap: 2px; }
+.stats .stat b { font-size: 15px; font-weight: 600; color: var(--ink); }
+.stats .stat i { color: var(--ink-faint); font-style: normal; }
+.action {
+  background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+}
+.action:hover { color: var(--ink); }
+
+/* ---- Loader ---- */
+.loader {
+  position: absolute; inset: 0; z-index: 30;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: var(--void);
+  color: var(--ink-faint);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: lowercase;
+}
+.loader .pulse {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: radial-gradient(circle, var(--accent), transparent 70%);
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.35); opacity: 1; } }
+.loader[hidden] { display: none; }
+
+[hidden] { display: none !important; }
+
+@media (min-width: 720px) {
+  #inspector { width: 360px; }
+}
