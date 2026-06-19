@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Substrate</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="stage">
+      <!-- Three.js mounts the living planetary organism here -->
+      <div id="organism"></div>
+
+      <!-- Glass UI overlays (the only chrome on top of the organism) -->
+      <header id="topbar" class="glass" hidden>
+        <div class="brand">
+          <span class="dot"></span><span class="brand-name">SUBSTRATE</span>
+        </div>
+        <div id="metabolism" class="metabolism"></div>
+      </header>
+
+      <section id="detail-card" class="glass card" hidden>
+        <div class="card-head">
+          <h2 id="detail-title">Organ</h2>
+          <button class="x" data-close="detail-card">✕</button>
+        </div>
+        <div id="detail-state" class="state-chip"></div>
+        <p id="detail-blurb"></p>
+        <div id="detail-vitals" class="vitals"></div>
+        <a id="detail-link" class="glass pill link" target="_blank" rel="noopener">Enter region ↗</a>
+      </section>
+
+      <div id="zoombar" class="glass zoombar" hidden></div>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div id="loader" class="loader">
+        <div class="pulse"></div>
+        <p>warming the substrate…</p>
+      </div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
