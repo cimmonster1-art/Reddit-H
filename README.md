@@ -1,9 +1,11 @@
-# Substrate
+# substrataaa
 
-> **A living cosmos of Reddit.**
+### *Reddit as a living cosmos.*
+
+> **substrataaa turns Reddit into a living 3D cosmos: subreddits become galaxies,
+> posts ignite as stars, comments orbit as moons, views become light, and upvotes
+> become fuel.**
 >
-> Subreddits become galaxies, posts ignite as stars, comments orbit as moons,
-> views become light, and upvotes fuel the systems that grow brighter each day.
 > You begin outside all of Reddit — a breathing cosmic web suspended in space —
 > then dive smoothly into a galaxy, a star system, a single thread, and finally
 > the orbiting signal-tissue of one conversation. Every day the universe has
@@ -12,6 +14,9 @@
 Built for Reddit's **Games with a Hook** hackathon on **Devvit Web** + **Three.js**.
 
 **Tagline:** *Zoom through Reddit as one living universe.*
+
+<!-- Naming: "Substrate" is the concept/philosophy; "substrataaa" is the app name
+     and Devvit identity. Use "substrataaa" verbatim in all public copy. -->
 
 ---
 

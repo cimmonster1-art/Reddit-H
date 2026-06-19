@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { COLOR } from '../../../design-system/index.js';
+import { COLOR, createSpriteLabel, disposeSpriteLabel } from '../../../design-system/index.js';
 import { PLANET_RADIUS } from './PlanetShell.js';
 import type { Raycastable, SelectionPayload, FocusFrame } from '../raycastable.js';
 import type { FoundationalBiome } from '../../world/foundational.js';
@@ -26,6 +26,7 @@ class BiomeNode implements Raycastable {
   private mat: THREE.MeshStandardMaterial;
   private phase = Math.random() * Math.PI * 2;
   private hovered = false;
+  private label: THREE.Sprite;
 
   constructor(readonly biome: FoundationalBiome, home: boolean) {
     const pos = latLonToVec3(biome.lat, biome.lon, PLANET_RADIUS * 1.05);
@@ -42,6 +43,12 @@ class BiomeNode implements Raycastable {
     this.object.position.copy(pos);
     this.object.scale.setScalar(this.baseScale);
     this.payload = { kind: 'biome', id: biome.id, label: `r/${biome.sub}`, data: biome };
+
+    // Float the galaxy's real subreddit name above it so the cosmos is legible
+    // without clicking. Home galaxy gets the oxygen accent; others stay cool ink.
+    this.label = createSpriteLabel(`r/${biome.sub}`, home ? '#aee3ff' : '#cdd9e8', home ? 0.05 : 0.04);
+    this.label.position.set(0, 1.7, 0); // local space; rides the node's scale
+    this.object.add(this.label);
   }
 
   setHover(on: boolean): void {
@@ -59,6 +66,16 @@ class BiomeNode implements Raycastable {
 
   focus(): FocusFrame {
     return { center: this.object.position.clone(), radius: this.baseScale * 3.2 };
+  }
+
+  dispose(): void {
+    this.object.remove(this.label);
+    disposeSpriteLabel(this.label);
+    this.mat.dispose();
+    this.object.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (m.isMesh) m.geometry.dispose();
+    });
   }
 }
 
@@ -85,5 +102,10 @@ export class BiomeField {
   update(_dt: number, elapsed: number): void {
     this.group.rotation.y = elapsed * 0.03; // ride the cosmos spin
     for (const n of this.nodes) n.pulse(elapsed);
+  }
+
+  dispose(): void {
+    for (const n of this.nodes) n.dispose();
+    this.group.clear();
   }
 }

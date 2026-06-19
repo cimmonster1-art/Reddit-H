@@ -4,3 +4,4 @@
 export * from './tokens.js';
 export * from './nebula.js';
 export * from './membrane.js';
+export * from './label.js';
