@@ -5,8 +5,8 @@ import type { FoundationalBiome } from '../world/foundational.js';
 import { VITAL_LABEL, VITAL_BLURB } from '../../shared/vocab.js';
 
 // Renders the contextual card for the current selection into the glass DOM from
-// index.html. Dumb by design: it reads a payload and writes text. The 'enter'
-// button asks the controller to dive.
+// index.html. Dumb by design: it reads a payload and writes text. Each card
+// type fully owns its action element (the shared #detail-link).
 export class CardHost {
   constructor(
     private store: SelectionStore,
@@ -25,7 +25,6 @@ export class CardHost {
     card.removeAttribute('hidden');
     if (p.kind === 'biome') this.renderBiome(p, p.data as FoundationalBiome);
     else if (p.kind === 'thread') this.renderThread(p, p.data as Organ);
-    this.wireEnter(p);
   }
 
   private renderBiome(p: SelectionPayload, b: FoundationalBiome): void {
@@ -33,7 +32,7 @@ export class CardHost {
     this.set('detail-state', b.archetype.toUpperCase());
     this.set('detail-blurb', b.blurb);
     this.vitals([['weight', pct(b.weight)], ['hue', `${Math.round(b.hue)}°`]]);
-    this.enterLabel('Dive into biome ↓');
+    this.asDiveButton('Dive into biome ↓');
   }
 
   private renderThread(p: SelectionPayload, o: Organ): void {
@@ -44,29 +43,36 @@ export class CardHost {
       ['lift', String(o.lift)], ['nerves', String(o.nerves)],
       ['oxygen', pct(o.oxygen)], ['spores', String(o.spores)],
     ]);
-    const link = document.getElementById('detail-link') as HTMLAnchorElement | null;
-    if (link) { link.href = o.permalink; link.removeAttribute('hidden'); }
+    this.asExternalLink(o.permalink);
     void p;
   }
 
-  private wireEnter(p: SelectionPayload): void {
-    const link = document.getElementById('detail-link');
-    if (p.kind === 'thread') return; // thread card uses the external permalink
-    if (!link) return;
-    link.setAttribute('hidden', '');
-  }
-
-  private enterLabel(text: string): void {
-    // Reuse the link element as a dive button for non-thread cards.
-    const link = document.getElementById('detail-link') as HTMLAnchorElement | null;
+  /** Turn the shared link element into an in-world dive button. */
+  private asDiveButton(text: string): void {
+    const link = this.link();
     if (!link) return;
     link.textContent = text;
+    link.removeAttribute('href');
     link.removeAttribute('hidden');
     link.onclick = (e) => {
       e.preventDefault();
       const sel = this.store.selected.get();
       if (sel) this.onEnter(sel);
     };
+  }
+
+  /** Turn the shared link element into an external permalink anchor. */
+  private asExternalLink(href: string): void {
+    const link = this.link();
+    if (!link) return;
+    link.textContent = 'Enter thread ↗';
+    link.href = href;
+    link.onclick = null;
+    link.removeAttribute('hidden');
+  }
+
+  private link(): HTMLAnchorElement | null {
+    return document.getElementById('detail-link') as HTMLAnchorElement | null;
   }
 
   private vitals(rows: [string, string][]): void {
