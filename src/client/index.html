@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Substrate</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="stage">
+      <!-- Phaser mounts the living organism here -->
+      <div id="organism"></div>
+
+      <!-- Glass UI overlays (the only chrome on top of the organism) -->
+      <header id="topbar" class="glass" hidden>
+        <div class="brand">
+          <span class="dot"></span><span class="brand-name">SUBSTRATE</span>
+        </div>
+        <div id="metabolism" class="metabolism"></div>
+      </header>
+
+      <button id="digest-toggle" class="glass pill" hidden>Today’s Bloom</button>
+
+      <section id="digest-card" class="glass card" hidden>
+        <div class="card-head">
+          <h2 id="digest-title">Today’s Bloom</h2>
+          <button class="x" data-close="digest-card">✕</button>
+        </div>
+        <ul id="digest-lines"></ul>
+      </section>
+
+      <section id="detail-card" class="glass card" hidden>
+        <div class="card-head">
+          <h2 id="detail-title">Organ</h2>
+          <button class="x" data-close="detail-card">✕</button>
+        </div>
+        <div id="detail-state" class="state-chip"></div>
+        <p id="detail-blurb"></p>
+        <div id="detail-vitals" class="vitals"></div>
+        <a id="detail-link" class="glass pill link" target="_blank" rel="noopener">Enter region ↗</a>
+      </section>
+
+      <section id="ritual" class="glass ritual" hidden>
+        <div class="card-head">
+          <h2 id="ritual-prompt">Growth Ritual</h2>
+        </div>
+        <div id="ritual-options" class="ritual-options"></div>
+        <div id="ritual-status" class="ritual-status"></div>
+      </section>
+
+      <nav id="actions" class="glass actions" hidden></nav>
+
+      <div id="zoombar" class="glass zoombar" hidden>
+        <button data-zoom="world" class="active">World</button>
+        <button data-zoom="region">Region</button>
+        <button data-zoom="organ">Organ</button>
+        <button data-zoom="signal">Signal</button>
+      </div>
+
+      <div id="toast" class="toast" hidden></div>
+
+      <div id="loader" class="loader">
+        <div class="pulse"></div>
+        <p>warming the substrate…</p>
+      </div>
+    </div>
+
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
