@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { SceneRoot } from './core/SceneRoot.js';
 import { CameraController } from './camera/CameraController.js';
-import { ZoomController } from './camera/ZoomController.js';
+import { ZoomController, type ZoomLevel, type Crumb } from './camera/ZoomController.js';
 import { RaycastManager } from './interaction/RaycastManager.js';
 import { PointerInput } from './interaction/PointerInput.js';
 import { SelectionStore } from './interaction/SelectionStore.js';
@@ -40,7 +40,7 @@ export class SubstrateController {
     this.current = new UpvoteCurrent();
 
     const homeId = this.injectHomeBiome();
-    this.biomes = new BiomeField(this.biomeList(), homeId);
+    this.biomes = new BiomeField(FOUNDATIONAL_BIOMES, homeId);
 
     this.root.scene.add(
       this.atmosphere.group, this.planet.object, this.biomes.group, this.current.points,
@@ -64,7 +64,10 @@ export class SubstrateController {
     this.root.loop.start();
   }
 
-  onZoomChange = this.zoom.onChange.bind(this.zoom);
+  /** Subscribe to zoom-ladder changes (used by the HUD breadcrumb). */
+  onZoomChange(fn: (level: ZoomLevel, crumbs: Crumb[]) => void): () => void {
+    return this.zoom.onChange(fn);
+  }
 
   surfaceTo(index: number): void { this.zoom.surfaceTo(index); }
 
@@ -77,8 +80,6 @@ export class SubstrateController {
   }
 
   // --- internals -----------------------------------------------------------
-
-  private biomeList() { return FOUNDATIONAL_BIOMES; }
 
   private injectHomeBiome(): string {
     const sub = this.world.subreddit.toLowerCase();
