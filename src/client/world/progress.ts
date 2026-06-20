@@ -29,17 +29,17 @@ export const MILESTONES: Milestone[] = [
   { phase: 2, id: 'live-pulse', state: 'done',    label: 'Live galaxy pulse',         detail: 'Cached /api/cosmos · activity → glow, pulse, spin, airflow' },
 
   // Phase 3 — depth + lore
-  { phase: 3, id: 'fossils',    state: 'partial', label: 'Fossil monuments',          detail: 'Iconic old posts crystallised in the planet crust' },
-  { phase: 3, id: 'storms',     state: 'partial', label: 'Storm visualisation',       detail: 'Controversial threads as atmospheric disturbances' },
-  { phase: 3, id: 'species',    state: 'planned', label: 'Keyword creatures',         detail: 'Recurring motifs evolve into named species' },
-  { phase: 3, id: 'moon-cycle', state: 'planned', label: 'Moon lifecycle',            detail: 'ASLEEP → CRACKED → GLOWING → HATCHED per comment' },
-  { phase: 3, id: 'atlas',      state: 'planned', label: 'Community atlas log',       detail: 'Append-only mythology: blooms, storms, named species' },
+  { phase: 3, id: 'fossils',    state: 'done',    label: 'Fossil monuments',          detail: 'Iconic old posts crystallised in the planet crust' },
+  { phase: 3, id: 'storms',     state: 'done',    label: 'Storm visualisation',       detail: 'Controversial threads as atmospheric disturbances' },
+  { phase: 3, id: 'species',    state: 'done',    label: 'Keyword creatures',         detail: 'Recurring motifs evolve into named species' },
+  { phase: 3, id: 'moon-cycle', state: 'done',    label: 'Moon lifecycle',            detail: 'ASLEEP → CRACKED → GLOWING → HATCHED per comment' },
+  { phase: 3, id: 'atlas',      state: 'done',    label: 'Community atlas log',       detail: 'Append-only mythology: blooms, storms, named species' },
 
   // Phase 4 — polish + hackathon submission
-  { phase: 4, id: 'bloom-post', state: 'planned', label: 'Today\'s Bloom post',      detail: 'Nightly digest auto-creates a living update post' },
-  { phase: 4, id: 'presence',   state: 'planned', label: 'Explorer presence',        detail: 'Other users visible as moving light-traces' },
+  { phase: 4, id: 'bloom-post', state: 'done',    label: 'Today\'s Bloom post',      detail: 'Nightly digest auto-creates a living update post' },
+  { phase: 4, id: 'presence',   state: 'partial', label: 'Explorer presence',        detail: 'Other users visible as moving light-traces' },
   { phase: 4, id: 'playtest',   state: 'partial', label: 'Live playtest',            detail: 'r/substratelab · substrataaa Devvit identity wired' },
-  { phase: 4, id: 'submit',     state: 'planned', label: 'Hackathon submission',     detail: 'Games with a Hook · polished · paint-tested' },
+  { phase: 4, id: 'submit',     state: 'partial', label: 'Hackathon submission',     detail: 'Games with a Hook · polished · paint-tested' },
 ];
 
 export function progressSummary(): { done: number; partial: number; total: number; pct: number } {

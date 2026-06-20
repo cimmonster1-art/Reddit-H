@@ -1,4 +1,4 @@
-import type { WorldState } from '../../shared/types.js';
+import type { WorldState, AtlasEntry } from '../../shared/types.js';
 import type { ZoomLevel, Crumb } from '../scene/camera/ZoomController.js';
 import { FOUNDATIONAL_BIOMES } from '../world/foundational.js';
 import { MILESTONES, progressSummary, currentPhase } from '../world/progress.js';
@@ -24,6 +24,7 @@ export class Hud {
     this.renderStats(world);
     this.renderSparkline(world);
     this.renderProgress();
+    this.renderAtlas(world.atlas);
   }
 
   setZoom(_level: ZoomLevel, crumbs: Crumb[]): void {
@@ -121,6 +122,17 @@ export class Hud {
       </div>
       ${bars}
       <div class="bs-count">${done}/${total} milestones · phase ${phase}</div>`;
+  }
+
+  private renderAtlas(atlas: AtlasEntry[]): void {
+    const el = document.getElementById('atlas-log');
+    if (!el || !atlas.length) return;
+    el.removeAttribute('hidden');
+    const recent = [...atlas].reverse().slice(0, 3);
+    el.innerHTML = `<div class="atlas-head"><span class="mono-label">ATLAS LOG</span></div>` +
+      recent.map((e) =>
+        `<div class="atlas-entry"><span class="ae-day">D${e.day}</span><span class="ae-text">${e.text}</span></div>`,
+      ).join('');
   }
 
   private show(id: string): void { document.getElementById(id)?.removeAttribute('hidden'); }

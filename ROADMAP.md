@@ -42,11 +42,11 @@ The world accumulates memory and the community leaves a permanent mark.
 
 | Milestone | Status | Detail |
 |-----------|--------|--------|
-| Fossil monuments | 🔨 partial | Iconic old posts crystallised in the planet crust |
-| Storm visualisation | 🔨 partial | Controversial threads render as atmospheric disturbances |
-| Keyword creatures | ⬜ planned | Recurring motifs evolve into named species over time |
-| Moon lifecycle | ⬜ planned | ASLEEP → CRACKED → GLOWING → HATCHED per comment activity |
-| Community atlas log | ⬜ planned | Append-only mythology: blooms, storms, named species |
+| Fossil monuments | ✅ done | Iconic old posts crystallised as amber shards in the planet crust |
+| Storm visualisation | ✅ done | Controversial threads render as red-amber particle vortices |
+| Keyword creatures | ✅ done | Recurring motifs drift as animated species in deep space |
+| Moon lifecycle | ✅ done | ASLEEP → CRACKED → GLOWING → HATCHED per comment activity |
+| Community atlas log | ✅ done | Append-only mythology scrolled in the left panel |
 
 ---
 
@@ -56,10 +56,10 @@ The final gate before the Games with a Hook entry.
 
 | Milestone | Status | Detail |
 |-----------|--------|--------|
-| Today's Bloom post | ⬜ planned | Nightly digest auto-creates a living update post in the sub |
-| Explorer presence | ⬜ planned | Other users visible as moving light-traces across the cosmos |
+| Today's Bloom post | ✅ done | Nightly digest auto-creates a living update post in the sub |
+| Explorer presence | 🔨 partial | Other users visible as moving light-traces across the cosmos |
 | Live playtest | 🔨 partial | r/substratelab · substrataaa Devvit identity wired · auth gated |
-| Hackathon submission | ⬜ planned | Games with a Hook · polished · paint-tested · submitted |
+| Hackathon submission | 🔨 partial | Games with a Hook · polished · paint-tested · submitted |
 
 ---
 

@@ -13,6 +13,7 @@ import { ThreadField } from './world/ThreadField.js';
 import { CommentField } from './world/CommentField.js';
 import { ReplyField } from './world/ReplyField.js';
 import { UpvoteCurrent } from './effects/UpvoteCurrent.js';
+import { SpeciesField } from './world/SpeciesField.js';
 import { FOUNDATIONAL_BIOMES } from '../world/foundational.js';
 import { api } from '../api.js';
 import type { Raycastable, SelectionPayload } from './raycastable.js';
@@ -41,6 +42,7 @@ export class SubstrateController {
   private comments: CommentField | null = null;
   private replies: ReplyField | null = null;
   private current: UpvoteCurrent;
+  private species: SpeciesField | null = null;
 
   private ctxThread: string | null = null;
   private contextFn: ContextFn | null = null;
@@ -77,6 +79,16 @@ export class SubstrateController {
     this.camera.frameOn(new THREE.Vector3(), this.planet.focus().radius);
     this.root.loop.start();
     this.zoom.refresh(); // paint the initial breadcrumb + VIEWING indicator
+
+    // Wire world data into living scene layers.
+    this.planet.setMoon(this.world.moon);
+    this.planet.setFossils(this.world.fossils);
+    this.atmosphere.setStorms(this.world.storms);
+    if (this.world.species.length) {
+      this.species = new SpeciesField(this.world.species);
+      this.root.scene.add(this.species.group);
+    }
+
     void this.loadLiveActivity();
   }
 
@@ -248,6 +260,7 @@ export class SubstrateController {
       this.threads?.update(dt, t);
       this.comments?.update(dt, t);
       this.replies?.update(dt, t);
+      this.species?.update(dt, t);
       this.current.update(dt);
     });
   }

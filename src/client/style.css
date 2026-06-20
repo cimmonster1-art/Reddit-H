@@ -116,6 +116,27 @@ html, body {
   margin-top: 8px;
 }
 
+/* ── Atlas log (left panel) ─────────────────────────────────────────── */
+#atlas-log {
+  border-top: 1px solid var(--hairline);
+  padding-top: 12px;
+}
+.atlas-head { margin-bottom: 8px; }
+.atlas-entry {
+  display: flex; gap: 8px; align-items: flex-start;
+  margin-bottom: 6px;
+}
+.ae-day { color: var(--ink-faint); font-size: 8.5px; letter-spacing: 0.12em; flex-shrink: 0; margin-top: 1px; }
+.ae-text { font-size: 9.5px; color: var(--ink-dim); line-height: 1.45; }
+
+/* ── Orbit diagram (right panel) ────────────────────────────────────── */
+.orbit-thumb {
+  display: block; margin: 10px 0;
+  opacity: 0.88;
+  background: rgba(4,7,15,0.4);
+  border-radius: 2px;
+}
+
 /* ── Right panel ────────────────────────────────────────────────────── */
 #panel-right {
   position: absolute;

@@ -3,6 +3,12 @@ import type { SelectionPayload } from '../scene/raycastable.js';
 import type { Organ, CommentNode, ReplyBranch } from '../../shared/types.js';
 import type { FoundationalBiome } from '../world/foundational.js';
 import { VITAL_LABEL } from '../../shared/vocab.js';
+import type { VitalState } from '../../shared/types.js';
+
+const VITAL_HEX: Record<VitalState, string> = {
+  'dormant-seed': '#4a5680', 'breathing-seed': '#aee3ff', 'nerve-bloom': '#7c8cff',
+  'sun-organ': '#ffb347', 'storm-organ': '#ff5d73', 'fossil-core': '#ffd98a', 'spore-gate': '#b78bff',
+};
 
 // Drives the right detail panel — four possible section cards: galaxy, star
 // (post), comment orbit, reply moon. Cold instrument layout; no glass, no blur.
@@ -55,8 +61,42 @@ export class Inspector {
       ['lift', fmt(o.lift)], ['comments', fmt(o.nerves)],
       ['oxygen', pct(o.oxygen)], ['spores', fmt(o.spores)],
     ]);
+    this.renderOrbitDiagram(o);
     void p;
     this.wire('sel-star-dive', 'Descend to comments ↓', p);
+  }
+
+  private renderOrbitDiagram(o: Organ): void {
+    const canvas = document.getElementById('orbit-thumb') as HTMLCanvasElement | null;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const W = canvas.width, H = canvas.height, cx = W / 2, cy = H / 2;
+    ctx.clearRect(0, 0, W, H);
+
+    const hex = VITAL_HEX[o.state] ?? '#99a8ff';
+    const starGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 9);
+    starGrad.addColorStop(0, hex);
+    starGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = starGrad;
+    ctx.beginPath(); ctx.arc(cx, cy, 9, 0, Math.PI * 2); ctx.fill();
+
+    const moonCount = Math.min(o.nerves, 16);
+    const rings = Math.min(3, Math.ceil(moonCount / 4));
+    for (let ring = 0; ring < rings; ring++) {
+      const r = 14 + ring * 10;
+      ctx.strokeStyle = 'rgba(39,196,217,0.15)';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+      const inRing = Math.min(moonCount - ring * 4, 4);
+      for (let j = 0; j < inRing; j++) {
+        const angle = (j / inRing) * Math.PI * 2 + ring * 0.5;
+        ctx.fillStyle = 'rgba(167,139,250,0.85)';
+        ctx.beginPath();
+        ctx.arc(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r, 1.8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
   }
 
   private renderComment(p: SelectionPayload, c: CommentNode): void {
