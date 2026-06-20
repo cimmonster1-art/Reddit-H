@@ -1,6 +1,7 @@
 import type { WorldState } from '../../shared/types.js';
 import type { ZoomLevel, Crumb } from '../scene/camera/ZoomController.js';
 import { FOUNDATIONAL_BIOMES } from '../world/foundational.js';
+import { MILESTONES, progressSummary, currentPhase } from '../world/progress.js';
 
 // Drives the left panel (brand + live stats + sparkline) and the bottom
 // breadcrumb bar. No glass, no cards — cold instrument readout only.
@@ -20,6 +21,7 @@ export class Hud {
     document.getElementById('loader')?.setAttribute('hidden', '');
     this.renderStats(world);
     this.renderSparkline(world);
+    this.renderProgress();
   }
 
   setZoom(_level: ZoomLevel, crumbs: Crumb[]): void {
@@ -87,6 +89,31 @@ export class Hud {
     grad.addColorStop(1, 'rgba(39,196,217,0)');
     ctx.fillStyle = grad;
     ctx.fill();
+  }
+
+  private renderProgress(): void {
+    const el = document.getElementById('build-status');
+    if (!el) return;
+    const { done, total, pct } = progressSummary();
+    const phase = currentPhase();
+    const phases = [1, 2, 3, 4];
+    const bars = phases.map((p) => {
+      const ms = MILESTONES.filter((m) => m.phase === p);
+      const d  = ms.filter((m) => m.state === 'done').length;
+      const pa = ms.filter((m) => m.state === 'partial').length;
+      const pp = Math.round((d + pa * 0.5) / ms.length * 100);
+      const cls = p < phase ? 'phase-done' : p === phase ? 'phase-active' : 'phase-future';
+      const fill = Math.round(pp / 100 * 8);
+      const bar = '█'.repeat(fill) + '░'.repeat(8 - fill);
+      return `<div class="phase-row ${cls}"><span class="pl">P${p}</span><span class="pb">${bar}</span><span class="pp">${pp}%</span></div>`;
+    }).join('');
+    el.innerHTML = `
+      <div class="bs-head">
+        <span class="mono-label">BUILD STATUS</span>
+        <span class="mono-label bs-pct">${pct}%</span>
+      </div>
+      ${bars}
+      <div class="bs-count">${done}/${total} milestones · phase ${phase}</div>`;
   }
 
   private show(id: string): void { document.getElementById(id)?.removeAttribute('hidden'); }

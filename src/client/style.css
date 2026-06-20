@@ -93,6 +93,29 @@ html, body {
 
 #sparkline { display: block; width: 100%; opacity: 0.7; }
 
+/* ── Build status (left panel bottom) ──────────────────────────────── */
+#build-status {
+  border-top: 1px solid var(--hairline);
+  padding-top: 14px;
+  margin-top: auto;
+}
+.bs-head { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.bs-pct { color: var(--accent); }
+.phase-row {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-bottom: 6px; font-size: 10px;
+}
+.pl { color: var(--ink-faint); letter-spacing: 0.14em; width: 16px; }
+.pb { letter-spacing: -0.04em; font-size: 9px; }
+.pp { color: var(--ink-dim); font-size: 9px; margin-left: auto; }
+.phase-done   .pb { color: var(--accent); }
+.phase-active .pb { color: var(--ink); }
+.phase-future .pb { color: var(--ink-faint); opacity: 0.4; }
+.bs-count {
+  font-size: 8.5px; color: var(--ink-faint); letter-spacing: 0.12em;
+  margin-top: 8px;
+}
+
 /* ── Right panel ────────────────────────────────────────────────────── */
 #panel-right {
   position: absolute;
