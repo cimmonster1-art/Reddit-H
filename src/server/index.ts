@@ -20,6 +20,7 @@ import type {
 import { TITLES } from '../shared/vocab.js';
 import { readSubreddit } from './digest.js';
 import { readThread } from './thread.js';
+import { readCosmos } from './cosmos.js';
 import { evolve, freshWorld } from './world.js';
 import {
   awardTitle,
@@ -93,6 +94,17 @@ app.get('/api/thread/:id', async (req: Request, res: Response) => {
     res.json(data);
   } catch {
     res.json({ threadId: req.params.id, comments: [] });
+  }
+});
+
+// Live per-galaxy activity for the foundational set. Body: { subs: string[] }.
+// Cached server-side; safe to call once per view.
+app.post('/api/cosmos', async (req: Request, res: Response) => {
+  try {
+    const subs = Array.isArray(req.body?.subs) ? (req.body.subs as string[]) : [];
+    res.json(await readCosmos(subs));
+  } catch {
+    res.json({ galaxies: [], sampledAt: Date.now() });
   }
 });
 

@@ -177,3 +177,20 @@ export interface ThreadResponse {
   threadId: string;
   comments: CommentNode[];
 }
+
+// ---- Live cosmos (per-galaxy activity pulse) ----
+
+/** Live activity signal for one galaxy, sampled from its subreddit. */
+export interface GalaxyPulse {
+  sub: string; //       subreddit slug (lowercase) the client keys on
+  activity: number; //  0..1 normalised across the sampled set -> pulse + glow
+  score: number; //     summed recent score    -> fuel
+  comments: number; //  summed recent comments  -> nerves / moons
+  posts: number; //     recent post count       -> stars
+}
+
+/** Live activity for the whole foundational set, cached briefly server-side. */
+export interface CosmosResponse {
+  galaxies: GalaxyPulse[];
+  sampledAt: number; // epoch ms of the underlying Reddit read
+}

@@ -28,6 +28,8 @@ class BiomeNode implements Raycastable {
   private phase = Math.random() * Math.PI * 2;
   private hovered = false;
   private label: THREE.Sprite;
+  private activity = 0.4; //        live energy, eased
+  private targetActivity = 0.4;
 
   constructor(readonly biome: FoundationalBiome, home: boolean) {
     const pos = latLonToVec3(biome.lat, biome.lon, PLANET_RADIUS * 1.05);
@@ -60,9 +62,19 @@ class BiomeNode implements Raycastable {
     this.mat.emissiveIntensity = this.baseEmissive * (on ? 1.7 : 1);
   }
 
-  pulse(elapsed: number): void {
+  /** Feed live subreddit activity (0..1) — drives glow level + pulse vigour. */
+  setActivity(level: number): void {
+    this.targetActivity = Math.max(0, Math.min(1, level));
+  }
+
+  pulse(dt: number, elapsed: number): void {
+    this.activity += (this.targetActivity - this.activity) * (1 - Math.exp(-2 * dt));
     if (this.hovered) return;
-    this.mat.emissiveIntensity = this.baseEmissive * (1 + 0.14 * Math.sin(elapsed * 0.8 + this.phase));
+    // A busy galaxy sits brighter and breathes deeper + faster.
+    const lit  = this.baseEmissive * (0.7 + this.activity * 0.9);
+    const amp  = 0.08 + this.activity * 0.26;
+    const rate = 0.6 + this.activity * 0.9;
+    this.mat.emissiveIntensity = lit * (1 + amp * Math.sin(elapsed * rate + this.phase));
   }
 
   focus(): FocusFrame {
@@ -129,10 +141,20 @@ export class BiomeField {
     for (const n of this.nodes) n.setHover(n.payload.id === id);
   }
 
+  /** Apply live activity keyed by subreddit slug to the matching galaxy. */
+  setActivity(map: Map<string, number>): void {
+    this.nodes.forEach((n, i) => {
+      const level = map.get(n.biome.sub.toLowerCase());
+      if (level === undefined) return;
+      n.setActivity(level);
+      this.halos[i]?.setActivity(level);
+    });
+  }
+
   update(dt: number, elapsed: number): void {
     this.group.rotation.y = elapsed * 0.03;
-    for (const n of this.nodes) n.pulse(elapsed);
-    for (const h of this.halos) h.update(dt);
+    for (const n of this.nodes) n.pulse(dt, elapsed);
+    for (const h of this.halos) h.update(dt, elapsed);
   }
 
   dispose(): void {

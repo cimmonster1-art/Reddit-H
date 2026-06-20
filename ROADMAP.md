@@ -32,6 +32,7 @@ Live Reddit data wired through the entire zoom ladder.
 | Replies as satellites | ✅ done | Score → fuel · recency → orbital drift speed |
 | Nightly world digest | ✅ done | Scheduled 08:00 UTC · metabolises overnight activity data |
 | Daily community action | ✅ done | vote / ventilate / perfuse / prune / incubate / bloom |
+| Live galaxy pulse | ✅ done | Cached `/api/cosmos` · real activity → glow, pulse, spin, airflow |
 
 ---
 

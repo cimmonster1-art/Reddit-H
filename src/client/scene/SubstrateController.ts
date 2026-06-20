@@ -76,6 +76,26 @@ export class SubstrateController {
     this.pointer.attach();
     this.camera.frameOn(new THREE.Vector3(), this.planet.focus().radius);
     this.root.loop.start();
+    this.zoom.refresh(); // paint the initial breadcrumb + VIEWING indicator
+    void this.loadLiveActivity();
+  }
+
+  /** Pull live per-galaxy activity and let each galaxy pulse to real Reddit. */
+  private async loadLiveActivity(): Promise<void> {
+    const subs = this.biomes.nodes.map((n) => n.biome.sub);
+    let data;
+    try {
+      data = await api.cosmos(subs);
+    } catch {
+      return; // the cosmos still breathes on its default activity
+    }
+    const map = new Map<string, number>();
+    for (const g of data.galaxies) map.set(g.sub.toLowerCase(), g.activity);
+    this.biomes.setActivity(map);
+
+    // Airflow follows the home galaxy: a livelier community drives more current.
+    const home = data.galaxies.find((g) => g.sub === this.world.subreddit.toLowerCase());
+    if (home) this.current.setIntensity(this.world.metabolism.bloodflow * (0.6 + home.activity));
   }
 
   /** Subscribe to zoom-ladder changes (used by the HUD breadcrumb). */

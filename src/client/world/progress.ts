@@ -26,6 +26,7 @@ export const MILESTONES: Milestone[] = [
   { phase: 2, id: 'replies',    state: 'done',    label: 'Replies as satellites',     detail: 'Score → fuel · recency → drift speed' },
   { phase: 2, id: 'digest',     state: 'done',    label: 'Nightly world digest',      detail: 'Scheduled 08:00 UTC · metabolises overnight data' },
   { phase: 2, id: 'actions',    state: 'done',    label: 'Daily community action',    detail: 'vote / ventilate / perfuse / prune / incubate / bloom' },
+  { phase: 2, id: 'live-pulse', state: 'done',    label: 'Live galaxy pulse',         detail: 'Cached /api/cosmos · activity → glow, pulse, spin, airflow' },
 
   // Phase 3 — depth + lore
   { phase: 3, id: 'fossils',    state: 'partial', label: 'Fossil monuments',          detail: 'Iconic old posts crystallised in the planet crust' },

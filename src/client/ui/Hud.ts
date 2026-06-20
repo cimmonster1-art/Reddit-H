@@ -18,6 +18,8 @@ export class Hud {
     this.world = world;
     this.show('panel-left');
     this.show('zoombar');
+    this.show('viewing');
+    this.show('controls-hint');
     document.getElementById('loader')?.setAttribute('hidden', '');
     this.renderStats(world);
     this.renderSparkline(world);
@@ -36,6 +38,11 @@ export class Hud {
     for (const b of Array.from(row.querySelectorAll('button'))) {
       b.addEventListener('click', () => this.onSurface(Number((b as HTMLElement).dataset.i)));
     }
+
+    // The VIEWING indicator names the deepest place you've descended to.
+    const deepest = crumbs[crumbs.length - 1];
+    const name = document.getElementById('viewing-name');
+    if (name) name.textContent = deepest && crumbs.length > 1 ? deepest.label : 'the cosmos';
   }
 
   private renderStats(w: WorldState): void {

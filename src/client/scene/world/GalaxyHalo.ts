@@ -22,6 +22,10 @@ export class GalaxyHalo {
   private discMat: THREE.PointsMaterial;
   private glow: THREE.Sprite;
   private glowMat: THREE.SpriteMaterial;
+  private baseGlow = 0.55;
+  private baseSpin = 0.055;
+  private activity = 0.4; // 0..1 live energy; eased toward target
+  private targetActivity = 0.4;
 
   constructor(color: number, radius: number) {
     // Local glow texture per halo (needs unique tint; shares the base map).
@@ -69,8 +73,18 @@ export class GalaxyHalo {
     this.group.add(this.disc, this.glow);
   }
 
-  update(dt: number): void {
-    this.disc.rotation.y += dt * 0.055; // gentle rotation independent of cosmos spin
+  /** Feed live subreddit activity (0..1); brighter, faster-spinning when hot. */
+  setActivity(level: number): void {
+    this.targetActivity = Math.max(0, Math.min(1, level));
+  }
+
+  update(dt: number, elapsed: number): void {
+    this.activity += (this.targetActivity - this.activity) * (1 - Math.exp(-2 * dt));
+    // Spin rate rises with live energy.
+    this.disc.rotation.y += dt * this.baseSpin * (0.5 + this.activity * 1.6);
+    // Core glow breathes; busier galaxies pulse brighter and a touch faster.
+    const breath = 1 + (0.06 + this.activity * 0.22) * Math.sin(elapsed * (0.6 + this.activity * 0.9));
+    this.glowMat.opacity = this.baseGlow * (0.55 + this.activity * 0.9) * breath;
   }
 
   dispose(): void {

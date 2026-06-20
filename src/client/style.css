@@ -199,6 +199,24 @@ html, body {
 }
 .crumb-row button.active .crumb-count { color: var(--accent); opacity: 0.7; }
 
+/* ── Viewing indicator + controls hint ─────────────────────────────── */
+#viewing {
+  position: absolute;
+  left: 18px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 7; display: flex; flex-direction: column; gap: 3px;
+  pointer-events: none;
+}
+#viewing .mono-label { font-size: 8.5px; }
+#viewing-name { font-size: 14px; font-weight: 600; color: var(--accent); letter-spacing: 0.04em; }
+
+#controls-hint {
+  position: absolute;
+  right: 18px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 7; font-size: 8.5px; letter-spacing: 0.18em;
+  color: var(--ink-faint); text-transform: uppercase;
+  pointer-events: none;
+}
+
 /* ── Loader ─────────────────────────────────────────────────────────── */
 .loader {
   position: absolute; inset: 0; z-index: 30;

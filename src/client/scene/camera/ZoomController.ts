@@ -32,6 +32,11 @@ export class ZoomController {
     return () => this.listeners.delete(fn);
   }
 
+  /** Re-emit current state — used to paint the HUD on first mount. */
+  refresh(): void {
+    for (const fn of this.listeners) fn(this.level, this.crumbs);
+  }
+
   /** Dive one rung toward the given selection. */
   dive(payload: SelectionPayload, frame: FocusFrame): void {
     const next = this.childLevel();
