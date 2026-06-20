@@ -34,12 +34,16 @@ export class PostFX {
     this.composer.setSize(width, height);
     this.composer.addPass(new RenderPass(scene, camera));
 
-    this.bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.5, 0.6, 0.8);
+    // Selective, soft bloom: a higher threshold means only genuinely bright
+    // cores bloom, and a wider radius spreads them into an expensive haze
+    // rather than a hot ring.
+    this.bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.42, 0.85, 0.86);
     this.composer.addPass(this.bloom);
 
+    // A deeper, tighter vignette frames the cosmos like a lens.
     const vignette = new ShaderPass(VignetteShader);
-    vignette.uniforms.offset.value = 1.1;
-    vignette.uniforms.darkness.value = 1.1;
+    vignette.uniforms.offset.value = 0.92;
+    vignette.uniforms.darkness.value = 1.28;
     this.composer.addPass(vignette);
 
     this.composer.addPass(new OutputPass());

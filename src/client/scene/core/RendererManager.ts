@@ -13,7 +13,9 @@ export class RendererManager {
     this.renderer.setSize(window.innerWidth, window.innerHeight, false);
     this.renderer.setClearColor(0x02040a, 1);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    // Slightly under 1.0 keeps highlights from clipping, so emissives bloom
+    // rather than blow out — a cooler, more expensive falloff into the void.
+    this.renderer.toneMappingExposure = 0.98;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     parent.appendChild(this.renderer.domElement);

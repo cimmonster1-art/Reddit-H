@@ -6,6 +6,7 @@ import { RaycastManager } from './interaction/RaycastManager.js';
 import { PointerInput } from './interaction/PointerInput.js';
 import { SelectionStore } from './interaction/SelectionStore.js';
 import { Atmosphere } from './world/Atmosphere.js';
+import { DustField } from './world/DustField.js';
 import { PlanetShell } from './world/PlanetShell.js';
 import { BiomeField } from './world/BiomeField.js';
 import { ThreadField } from './world/ThreadField.js';
@@ -33,6 +34,7 @@ export class SubstrateController {
   readonly selection = new SelectionStore();
 
   private atmosphere = new Atmosphere();
+  private dust = new DustField();
   private planet = new PlanetShell();
   private biomes: BiomeField;
   private threads: ThreadField | null = null;
@@ -54,7 +56,7 @@ export class SubstrateController {
     this.biomes = new BiomeField(FOUNDATIONAL_BIOMES, homeId);
 
     this.root.scene.add(
-      this.atmosphere.group, this.planet.object, this.biomes.group, this.current.points,
+      this.atmosphere.group, this.dust.group, this.planet.object, this.biomes.group, this.current.points,
     );
     this.current.setIntensity(world.metabolism.bloodflow);
 
@@ -220,6 +222,7 @@ export class SubstrateController {
     this.root.loop.add((dt, t) => {
       this.camera.update(dt);
       this.atmosphere.update(dt, t);
+      this.dust.update(dt, t);
       this.planet.update(dt, t);
       this.biomes.update(dt, t);
       this.threads?.update(dt, t);
