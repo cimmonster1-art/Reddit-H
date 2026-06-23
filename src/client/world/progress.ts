@@ -37,7 +37,7 @@ export const MILESTONES: Milestone[] = [
 
   // Phase 4 — polish + hackathon submission
   { phase: 4, id: 'bloom-post', state: 'done',    label: 'Today\'s Bloom post',      detail: 'Nightly digest auto-creates a living update post' },
-  { phase: 4, id: 'presence',   state: 'partial', label: 'Explorer presence',        detail: 'Other users visible as moving light-traces' },
+  { phase: 4, id: 'presence',   state: 'done',    label: 'Explorer presence',        detail: 'Live viewers drift as light-traces · Redis heartbeat' },
   { phase: 4, id: 'playtest',   state: 'partial', label: 'Live playtest',            detail: 'r/substratelab · substrataaa Devvit identity wired' },
   { phase: 4, id: 'submit',     state: 'partial', label: 'Hackathon submission',     detail: 'Games with a Hook · polished · paint-tested' },
 ];

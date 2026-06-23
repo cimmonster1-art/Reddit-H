@@ -21,6 +21,7 @@ import { TITLES } from '../shared/vocab.js';
 import { readSubreddit } from './digest.js';
 import { readThread } from './thread.js';
 import { readCosmos } from './cosmos.js';
+import { heartbeat } from './presence.js';
 import { evolve, freshWorld } from './world.js';
 import {
   awardTitle,
@@ -105,6 +106,17 @@ app.post('/api/cosmos', async (req: Request, res: Response) => {
     res.json(await readCosmos(subs));
   } catch {
     res.json({ galaxies: [], sampledAt: Date.now() });
+  }
+});
+
+// Live explorer presence. Records this viewer's heartbeat and returns the other
+// explorers currently in this organism, as anonymous light-trace seeds. Polled
+// by the webview on a short interval; Redis-only, no Reddit read.
+app.post('/api/presence', async (_req: Request, res: Response) => {
+  try {
+    res.json(await heartbeat(subredditName(), userId(), Date.now()));
+  } catch {
+    res.json({ explorers: [], total: 1 });
   }
 });
 

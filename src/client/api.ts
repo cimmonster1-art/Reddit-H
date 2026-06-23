@@ -3,6 +3,7 @@ import type {
   CosmosResponse,
   InitResponse,
   MutationResponse,
+  PresenceResponse,
   ThreadResponse,
   VoteRequest,
 } from '../shared/types.js';
@@ -24,6 +25,7 @@ async function post<T>(url: string, body: unknown): Promise<T> {
 export const api = {
   init: () => get<InitResponse>('/api/init'),
   cosmos: (subs: string[]) => post<CosmosResponse>('/api/cosmos', { subs }),
+  presence: () => post<PresenceResponse>('/api/presence', {}),
   thread: (id: string) => get<ThreadResponse>(`/api/thread/${encodeURIComponent(id)}`),
   act: (body: ActionRequest) => post<MutationResponse>('/api/action', body),
   vote: (body: VoteRequest) => post<MutationResponse>('/api/vote', body),

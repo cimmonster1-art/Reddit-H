@@ -28,6 +28,7 @@ async function boot(): Promise<void> {
 
   controller.onZoomChange((level, crumbs) => hud.setZoom(level, crumbs));
   controller.onContext((thread, comment) => inspector.setContext(thread, comment));
+  controller.onPresence((total) => hud.setPresence(total));
   controller.mount();
   hud.mount(init.world);
 }

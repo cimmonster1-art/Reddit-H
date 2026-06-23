@@ -194,3 +194,17 @@ export interface CosmosResponse {
   galaxies: GalaxyPulse[];
   sampledAt: number; // epoch ms of the underlying Reddit read
 }
+
+// ---- Explorer presence (other live viewers) ----
+
+/** One other explorer currently in the cosmos, rendered as a drifting light-trace.
+ *  Only an anonymous deterministic seed crosses the wire — never a username. */
+export interface ExplorerTrace {
+  seed: number; // 0..1, stable per explorer -> path orientation, speed, hue
+}
+
+/** Live presence: who else is exploring this organism right now. */
+export interface PresenceResponse {
+  explorers: ExplorerTrace[]; // others active in the recent window (capped)
+  total: number; // total live explorers including you
+}

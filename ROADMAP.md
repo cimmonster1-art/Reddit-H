@@ -57,7 +57,7 @@ The final gate before the Games with a Hook entry.
 | Milestone | Status | Detail |
 |-----------|--------|--------|
 | Today's Bloom post | ✅ done | Nightly digest auto-creates a living update post in the sub |
-| Explorer presence | 🔨 partial | Other users visible as moving light-traces across the cosmos |
+| Explorer presence | ✅ done | Live viewers drift as comet light-traces · Redis heartbeat presence · `HERE NOW` count in HUD |
 | Live playtest | 🔨 partial | r/substratelab · substrataaa Devvit identity wired · auth gated |
 | Hackathon submission | 🔨 partial | Games with a Hook · polished · paint-tested · submitted |
 

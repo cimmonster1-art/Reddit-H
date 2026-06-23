@@ -14,6 +14,7 @@ import { CommentField } from './world/CommentField.js';
 import { ReplyField } from './world/ReplyField.js';
 import { UpvoteCurrent } from './effects/UpvoteCurrent.js';
 import { SpeciesField } from './world/SpeciesField.js';
+import { ExplorerField } from './world/ExplorerField.js';
 import { FOUNDATIONAL_BIOMES } from '../world/foundational.js';
 import { api } from '../api.js';
 import type { Raycastable, SelectionPayload } from './raycastable.js';
@@ -43,9 +44,12 @@ export class SubstrateController {
   private replies: ReplyField | null = null;
   private current: UpvoteCurrent;
   private species: SpeciesField | null = null;
+  private explorers = new ExplorerField();
 
   private ctxThread: string | null = null;
   private contextFn: ContextFn | null = null;
+  private presenceFn: ((total: number) => void) | null = null;
+  private presenceTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor(parent: HTMLElement, private world: WorldState) {
     this.root = new SceneRoot(parent);
@@ -58,7 +62,8 @@ export class SubstrateController {
     this.biomes = new BiomeField(FOUNDATIONAL_BIOMES, homeId);
 
     this.root.scene.add(
-      this.atmosphere.group, this.dust.group, this.planet.object, this.biomes.group, this.current.points,
+      this.atmosphere.group, this.dust.group, this.planet.object, this.biomes.group,
+      this.current.points, this.explorers.group,
     );
     this.current.setIntensity(world.metabolism.bloodflow);
 
@@ -90,7 +95,30 @@ export class SubstrateController {
     }
 
     void this.loadLiveActivity();
+    this.startPresence();
   }
+
+  /** Beat a heartbeat and reconcile other explorers' light-traces, on a loop. */
+  private startPresence(): void {
+    const poll = async (): Promise<void> => {
+      let data;
+      try {
+        data = await api.presence();
+      } catch {
+        return; // the cosmos is just quiet for now
+      }
+      this.explorers.sync(data.explorers);
+      this.presenceFn?.(data.total);
+    };
+    void poll();
+    this.presenceTimer = setInterval(() => void poll(), 20_000);
+    window.addEventListener('pagehide', () => {
+      if (this.presenceTimer) clearInterval(this.presenceTimer);
+    }, { once: true });
+  }
+
+  /** Subscribe to the live explorer count (rendered in the HUD). */
+  onPresence(fn: (total: number) => void): void { this.presenceFn = fn; }
 
   /** Pull live per-galaxy activity and let each galaxy pulse to real Reddit. */
   private async loadLiveActivity(): Promise<void> {
@@ -261,6 +289,7 @@ export class SubstrateController {
       this.comments?.update(dt, t);
       this.replies?.update(dt, t);
       this.species?.update(dt, t);
+      this.explorers.update(dt, t);
       this.current.update(dt);
     });
   }

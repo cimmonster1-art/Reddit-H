@@ -59,7 +59,15 @@ export class Hud {
     const el = document.getElementById('stat-list');
     if (el) el.innerHTML = rows.map(([l, v, accent]) =>
       `<li><span class="sl">${l}</span><span class="sv${accent ? ' accent' : ''}">${v}</span></li>`,
-    ).join('');
+    ).join('') +
+      `<li id="stat-explorers-row"><span class="sl">HERE NOW</span>` +
+      `<span class="sv accent" id="stat-explorers">1</span></li>`;
+  }
+
+  /** Live count of explorers currently in the cosmos (including you). */
+  setPresence(total: number): void {
+    const el = document.getElementById('stat-explorers');
+    if (el) el.textContent = fmt(Math.max(1, total));
   }
 
   private renderSparkline(w: WorldState): void {
